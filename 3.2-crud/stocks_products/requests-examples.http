@@ -1,0 +1,115 @@
+# создание продукта
+POST http://localhost:8000/api/v1/products/
+Content-Type: application/json
+
+{
+  "title": "Груша",
+  "description": "Лучшие яблоки на рынке"
+}
+
+###
+
+# получение продуктов
+GET http://localhost:8000/api/v1/products/
+Content-Type: application/json
+
+###
+
+# обновление продукта
+PATCH http://localhost:8000/api/v1/products/1/
+Content-Type: application/json
+
+{
+  "description": "Самые сочные и ароматные помидорки"
+}
+
+###
+# обновление продукта
+PATCH http://localhost:8000/api/v1/products/2/
+Content-Type: application/json
+
+{
+  "title": "Яблоко"
+}
+
+###
+
+# удаление продукта
+DELETE http://localhost:8000/api/v1/products/1/
+Content-Type: application/json
+
+###
+
+# поиск продуктов по названию и описанию
+GET http://localhost:8000/api/v1/products/?search=яблоко
+Content-Type: application/json
+
+###
+
+# создание склада
+POST http://localhost:8000/api/v1/stocks/
+Content-Type: application/json
+
+{
+  "address": "мой адрес не дом и не улица, мой адрес сегодня такой: www.ленинград-спб.ru12345678",
+  "positions": [
+    {
+      "product": 1,
+      "quantity": 250,
+      "price": 120.50
+    },
+    {
+      "product": 2,
+      "quantity": 100,
+      "price": 180
+    }
+  ]
+}
+
+###
+POST http://localhost:8000/api/v1/stocks/
+Content-Type: application/json
+
+{
+  "address": "Склад с бананами",
+  "positions": [
+    {
+      "product": 3,
+      "quantity": 1000,
+      "price": 150
+    }
+  ]
+}
+
+###
+
+# обновляем записи на складе
+PATCH http://localhost:8000/api/v1/stocks/2/
+Content-Type: application/json
+
+{
+  "positions": [
+    {
+      "product": 1,
+      "quantity": 40,
+      "price": 10.50
+    },
+    {
+      "product": 2,
+      "quantity": 4,
+      "price": 100.85
+    }
+  ]
+}
+
+###
+
+# поиск складов, где есть определенный продукт
+GET http://localhost:8000/api/v1/stocks/?products=банан
+Content-Type: application/json
+
+###
+
+# Пагинация
+GET http://localhost:8000/api/v1/products/?page=3
+Content-Type: application/json
