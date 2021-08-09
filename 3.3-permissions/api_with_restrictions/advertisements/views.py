@@ -1,10 +1,10 @@
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
 from advertisements.filters import AdvertisementFilter
 from advertisements.models import Advertisement
 from advertisements.serializers import AdvertisementSerializer
-from permissions import IsOwnerOrReadOnly
+from advertisements.permissions import IsOwnerOrReadOnly
 
 from django_filters import rest_framework as filters
 
@@ -23,4 +23,4 @@ class AdvertisementViewSet(ModelViewSet):
         """Получение прав для действий."""
         if self.action in ["create", "update", "partial_update"]:
             return [IsAuthenticated(), IsOwnerOrReadOnly()]
-        return []
+        return [IsOwnerOrReadOnly()]

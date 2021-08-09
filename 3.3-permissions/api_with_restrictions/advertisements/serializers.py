@@ -42,10 +42,10 @@ class AdvertisementSerializer(serializers.ModelSerializer):
         # TODO: добавьте требуемую валидацию
 
         user = self.context['request'].user
-        advertisement = Advertisement.objects.filter(creator=user)
+        advertisement = Advertisement.objects.filter(creator=user).filter(status='OPEN')
         if 'CLOSED' in data.values():
             pass
-        elif 'OPEN' in data.values() and len(advertisement.filter(status='OPEN')) >= 10:
+        elif 'OPEN' in data.values() and advertisement.count() >= 10:
             raise serializers.ValidationError('Максимальное число объявлений в статусе Открыто не должно '
                                               'превышать 10.')
         elif len(advertisement.filter(status='OPEN')) >= 10:

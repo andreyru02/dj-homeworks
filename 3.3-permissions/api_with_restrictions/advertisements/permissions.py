@@ -10,4 +10,4 @@ class IsOwnerOrReadOnly(BasePermission):
         if request.user.is_staff:
             return True
 
-        return obj.creator == request.user
+        return request.user == obj.creator
