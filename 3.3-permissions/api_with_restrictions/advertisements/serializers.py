@@ -48,7 +48,7 @@ class AdvertisementSerializer(serializers.ModelSerializer):
         elif 'OPEN' in data.values() and advertisement.count() >= 10:
             raise serializers.ValidationError('Максимальное число объявлений в статусе Открыто не должно '
                                               'превышать 10.')
-        elif len(advertisement.filter(status='OPEN')) >= 10:
+        elif advertisement.count() >= 10:
             raise serializers.ValidationError('Максимальное число объявлений в статусе Открыто не должно '
                                               'превышать 10.')
 
