@@ -8,12 +8,12 @@ from students.models import Course
 def test_get_course(api_client, course_factory):
     course = course_factory(_quantity=1)
     url = reverse('courses-list')
-    resp = api_client.get(url)
-    course_id = resp.json()[0].get('id')
+    resp = api_client.get(url, data={'id': course[0].id})
+    resp_json = resp.json()
 
     assert resp.status_code == 200
-    assert len(resp.data) == 1
-    assert Course(id=course_id) == course[0]
+    assert course[0].id == resp_json[0].get('id')
+    assert course[0].name == resp_json[0].get('name')
 
 
 @pytest.mark.django_db
@@ -30,28 +30,24 @@ def test_get_courses(api_client, course_factory):
 def test_filters_courses_id(api_client, course_factory):
     courses = course_factory(_quantity=3)
     url = reverse('courses-list')
-    resp = api_client.get(url)
-
-    course_id = resp.json()[0].get('id')
-    course_filter = Course.objects.filter(id=course_id)
+    resp = api_client.get(url, data={'id': courses[0].id})
+    resp_json = resp.json()
 
     assert resp.status_code == 200
-    assert len(resp.data) == 3
-    assert courses[0].id == course_filter[0].id
+    assert courses[0].id == resp_json[0].get('id')
 
 
 @pytest.mark.django_db
 def test_filters_courses_name(api_client, course_factory):
     courses = course_factory(_quantity=3)
     url = reverse('courses-list')
-    resp = api_client.get(url)
+    resp = api_client.get(url, data={'name': courses[0].name})
+    resp_json = resp.json()
 
-    course_name = resp.json()[0].get('name')
-    course_filter = Course.objects.filter(name=course_name)
+    print(resp_json)
 
     assert resp.status_code == 200
-    assert len(resp.data) == 3
-    assert courses[0].name == course_filter[0].name
+    assert courses[0].name == resp_json[0].get('name')
 
 
 @pytest.mark.django_db
@@ -72,8 +68,8 @@ def test_update_course(api_client, course_factory):
         'name': 'Python'
     }
     courses = course_factory(_quantity=1)
-    url = reverse('courses-list')
-    resp = api_client.patch(url + str(courses[0].id) + '/', data=data)
+    url = reverse('courses-detail', args=(courses[0].id,))
+    resp = api_client.patch(url, data=data)
 
     assert resp.status_code == 200
     assert resp.data['name'] == 'Python'
