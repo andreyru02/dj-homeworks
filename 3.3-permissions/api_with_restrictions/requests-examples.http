@@ -32,7 +32,7 @@ Authorization: Token 7bc429563ae008e6a5ad2429cc4f3ffe497c6e7d
 ###
 
 # попытка поменять объявление
-PATCH http://localhost:8000/api/advertisements/65/
+PATCH http://localhost:8000/api/advertisements/56/
 Content-Type: application/json
 Authorization: Token 26579470879931ed768f451b95dc106050ff462d
 
