@@ -7,13 +7,13 @@ from students.models import Course
 @pytest.mark.django_db
 def test_get_course(api_client, course_factory):
     course = course_factory(_quantity=1)
-    url = reverse('courses-list')
-    resp = api_client.get(url, data={'id': course[0].id})
+    url = reverse('courses-detail', args=(course[0].id,))
+    resp = api_client.get(url)
     resp_json = resp.json()
 
     assert resp.status_code == 200
-    assert course[0].id == resp_json[0].get('id')
-    assert course[0].name == resp_json[0].get('name')
+    assert course[0].id == resp_json.get('id')
+    assert course[0].name == resp_json.get('name')
 
 
 @pytest.mark.django_db
@@ -78,11 +78,10 @@ def test_update_course(api_client, course_factory):
 @pytest.mark.django_db
 def test_delete_course(api_client, course_factory):
     courses = course_factory(_quantity=3)
-
     counts_objects = Course.objects.count()
 
-    url = reverse('courses-list')
-    resp = api_client.delete(url + str(courses[0].id) + '/')
+    url = reverse('courses-detail', args=(courses[0].id,))
+    resp = api_client.delete(url)
 
     assert resp.status_code == 204
     assert counts_objects - 1 == Course.objects.count()
